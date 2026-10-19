@@ -3,4 +3,12 @@
     <File Path="docs/PRD.md" />
     <File Path="docs/TRD.md" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="frontend/frontend.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="TodoApp.Api/TodoApp.Api.csproj" />
 </Solution>

@@ -78,4 +78,12 @@ public class TodosController : ControllerBase
     {
         return new ProblemDetails { Status = 404, Title = "Not Found", Detail = $"Todo {id} was not found." };
     }
+
+    // GET /todos/stats - return total count, completed count, and pending count
+    // Delegate to _service.GetStats(), which returns a TodoStatsResponse
+    [HttpGet("stats")]
+    public ActionResult<TodoStatsResponse> GetStats()
+    {
+        return Ok(_service .GetStats());
+    }
 }

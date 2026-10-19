@@ -106,4 +106,18 @@ public class TodoService : ITodoService
             IsCompleted = todo.IsCompleted
         };
     }
+    // Count the todos: total, completed and pending 
+    public TodoStatsResponse GetStats()
+    {
+        var todos = _repository.GetAll();
+        var total = todos.Count;
+        var completed = todos.Count(t => t.IsCompleted);
+        var pending = total - completed;
+        return new TodoStatsResponse
+        {
+            Total = total,
+            Completed = completed,
+            Pending = pending
+        };
+    }
 }

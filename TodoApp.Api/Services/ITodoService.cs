@@ -9,4 +9,6 @@ public interface ITodoService
     TodoResponse Create(CreateTodoRequest request);
     TodoResponse? Update(int id, UpdateTodoRequest request);
     bool Delete(int id);
+    TodoStatsResponse GetStats();
 }
+
