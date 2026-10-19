@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../TodoApp/Frontend/frontend.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="TodoApp.Api.csproj" />
+</Solution>
