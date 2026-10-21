@@ -28,8 +28,23 @@ async function handleResponse(response) {
   throw new Error(message);
 }
 
-export async function getAll() {
-  const response = await fetch(`${BASE_URL}/todos`);
+export async function getAll(completed, sort) {
+  const params = new URLSearchParams();
+  if (completed !== undefined && completed !== null) {
+    params.set('completed', completed);
+  }
+  if (sort) {
+    params.set('sort', sort);
+  }
+  const query = params.toString();
+  const response = await fetch(`${BASE_URL}/todos${query ? `?${query}` : ''}`);
+  return handleResponse(response);
+}
+
+export async function clearCompleted() {
+  const response = await fetch(`${BASE_URL}/todos/completed`, {
+    method: 'DELETE',
+  });
   return handleResponse(response);
 }
 
