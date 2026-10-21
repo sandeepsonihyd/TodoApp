@@ -1,8 +1,22 @@
 <Solution>
+  <Folder Name="/.github/">
+    <File Path=".github/copilot-instructions.md" />
+    <File Path=".github/instructions/backend.instructions.md" />
+    <File Path=".github/instructions/frontend.instructions.md" />
+  </Folder>
+  <Folder Name="/.github/instructions/">
+    <File Path=".github/instructions/backend.instructions.md" />
+    <File Path=".github/instructions/frontend.instructions.md" />
+  </Folder>
+  <Folder Name="/.github/NewFolder1/" />
+  <Folder Name="/backend/">
+    <Project Path="backend/TodoApp.Api/TodoApp.Api.csproj" />
+  </Folder>
   <Folder Name="/docs/">
     <File Path="docs/PRD.md" />
     <File Path="docs/TRD.md" />
   </Folder>
+  <Folder Name="/NewFolder1/" />
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
   </Folder>
@@ -10,5 +24,4 @@
     <Build />
     <Deploy />
   </Project>
-  <Project Path="TodoApp.Api/TodoApp.Api.csproj" />
 </Solution>

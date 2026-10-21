@@ -84,6 +84,6 @@ public class TodosController : ControllerBase
     [HttpGet("stats")]
     public ActionResult<TodoStatsResponse> GetStats()
     {
-        return Ok(_service .GetStats());
+        return Ok(_service.GetStats());
     }
 }

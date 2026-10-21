@@ -22,6 +22,16 @@ public class TodoService : ITodoService
             .ToList();
     }
 
+    public IReadOnlyList<TodoResponse> GetCompleted()
+    {
+        return _repository.GetAll()
+            .Where(t => t.IsCompleted)
+            .OrderByDescending(t => t.DateCreated)
+            .ThenByDescending(t => t.Id)
+            .Select(ToResponse)
+            .ToList();
+    }
+
     public TodoResponse? GetById(int id)
     {
         var todo = _repository.GetById(id);
