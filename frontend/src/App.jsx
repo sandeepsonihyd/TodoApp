@@ -19,7 +19,10 @@ function App() {
       const completed = f === 'all' ? undefined : f === 'completed';
       const allData = await todoApi.getAll(completed, s);
       setAllTodos(allData);
-      if (c) {
+      if (c && !allData.some((todo) => todo.Category === c)) {
+        setCategoryFilter('');
+        setTodos(allData);
+      } else if (c) {
         setTodos(await todoApi.getAll(completed, s, c));
       } else {
         setTodos(allData);
