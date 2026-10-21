@@ -3,8 +3,8 @@
 ## Project
 A single-user Todo application. No authentication. Built in versions:
 - Version 1 (complete): in-memory storage, no database
-- Version 2 (current) : SQLite via Entity Framework Core with migrations
-- Version 3: Category field added to todos
+- Version 2 (complete) : SQLite via Entity Framework Core with migrations
+- Version 3 (current) : Category field added to todos
  
 ## Repository layout
 Monorepo with one Visual Studio solution, TodoApp.slnx, at the root.
