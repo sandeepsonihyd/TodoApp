@@ -204,6 +204,8 @@ Not changed: `TodosController.cs`, `ITodoService.cs`, `TodoService.cs`, `ITodoRe
 
 Additions outside the existing files: the database context, migrations, and package references. These are infrastructure for the repository only. The contract (API, DTOs, service) is unchanged.
 
+Version 2 is completed
+
 ## 8. Traceability Table
 
 | PRD requirement | TRD section(s) |
