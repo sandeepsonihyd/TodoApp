@@ -63,6 +63,7 @@ public class TodoRepository : ITodoRepository
 
         existing.Title = todo.Title;
         existing.Description = todo.Description;
+        existing.Category = todo.Category;
         existing.DateCreated = todo.DateCreated;
         existing.IsCompleted = todo.IsCompleted;
         _context.SaveChanges();
