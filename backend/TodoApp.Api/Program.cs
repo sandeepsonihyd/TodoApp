@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using TodoApp.Api.Data;
 using TodoApp.Api.Repositories;
 using TodoApp.Api.Services;
 
@@ -12,7 +14,9 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ITodoRepository, TodoRepository>();
+builder.Services.AddDbContext<TodoDbContext>(options =>
+    options.UseSqlite("Data Source=" + Path.Combine(builder.Environment.ContentRootPath, "todos.db")));
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<ITodoService, TodoService>();
 
 builder.Services.AddCors(options =>

@@ -2,8 +2,8 @@
  
 ## Project
 A single-user Todo application. No authentication. Built in versions:
-- Version 1 (current): in-memory storage, no database
-- Version 2: SQLite via Entity Framework Core with migrations
+- Version 1 (complete): in-memory storage, no database
+- Version 2 (current) : SQLite via Entity Framework Core with migrations
 - Version 3: Category field added to todos
  
 ## Repository layout
@@ -38,7 +38,7 @@ When storage changes, only the repository layer changes.
  
 ## Do NOT
 - Add authentication, authorization, or user accounts.
-- Add a database, ORM, or Category field until the relevant version.
+- Add a Category field. That is Version 3.
 - Add new dependencies without stating why.
 - Put data access code in a controller or a service.
 - Use TypeScript. This project is JavaScript.
