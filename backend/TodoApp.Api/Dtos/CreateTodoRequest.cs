@@ -10,4 +10,7 @@ public class CreateTodoRequest
 
     [MaxLength(1000)]
     public string? Description { get; set; }
+
+    [MaxLength(50)]
+    public string? Category { get; set; }
 }

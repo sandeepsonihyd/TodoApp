@@ -11,6 +11,9 @@ public class UpdateTodoRequest
     [MaxLength(1000)]
     public string? Description { get; set; }
 
+    [MaxLength(50)]
+    public string? Category { get; set; }
+
     [Required]
     public bool? IsCompleted { get; set; }
 }

@@ -5,22 +5,37 @@ import TodoList from './components/TodoList';
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [allTodos, setAllTodos] = useState([]);
   const [editingTodo, setEditingTodo] = useState(null);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const [filter, setFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('');
   const [sort, setSort] = useState('created_desc');
 
-  async function loadTodos(f = filter, s = sort) {
+  async function loadTodos(f = filter, s = sort, c = categoryFilter) {
     try {
       const completed = f === 'all' ? undefined : f === 'completed';
-      const data = await todoApi.getAll(completed, s);
-      setTodos(data);
+      const allData = await todoApi.getAll(completed, s);
+      setAllTodos(allData);
+      if (c && !allData.some((todo) => todo.Category === c)) {
+        setCategoryFilter('');
+        setTodos(allData);
+      } else if (c) {
+        setTodos(await todoApi.getAll(completed, s, c));
+      } else {
+        setTodos(allData);
+      }
     } catch (error) {
       setMessage({ type: 'error', text: error.message });
     }
     setIsLoading(false);
+  }
+
+  async function handleCategoryChange(value) {
+    setCategoryFilter(value);
+    await loadTodos(filter, sort, value);
   }
 
   useEffect(() => {
@@ -51,6 +66,7 @@ function App() {
       await todoApi.update(todo.Id, {
         Title: todo.Title,
         Description: todo.Description,
+        Category: todo.Category,
         IsCompleted: !todo.IsCompleted,
       });
       setMessage({
@@ -120,6 +136,17 @@ function App() {
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
+          </select>
+        </label>
+        <label>
+          Category:{' '}
+          <select value={categoryFilter} onChange={(e) => handleCategoryChange(e.target.value)}>
+            <option value="">All categories</option>
+            {[...new Set(allTodos.map((todo) => todo.Category).filter(Boolean))]
+              .sort()
+              .map((category) => (
+                <option key={category} value={category}>{category}</option>
+              ))}
           </select>
         </label>
         <label>

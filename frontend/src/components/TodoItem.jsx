@@ -12,6 +12,7 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
       </strong>{' '}
       <span>{todo.IsCompleted ? '[Completed]' : '[Open]'}</span>
       {todo.Description && <div>{todo.Description}</div>}
+      {todo.Category && <div>Category: {todo.Category}</div>}
       <small>Created: {created}</small>
       <div>
         <button onClick={() => onToggle(todo)}>

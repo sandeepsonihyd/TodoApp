@@ -18,13 +18,18 @@ public class TodoRepository : ITodoRepository
         return _context.Todos.AsNoTracking().ToList();
     }
 
-    public IReadOnlyList<Todo> Query(bool? completed, string sort)
+    public IReadOnlyList<Todo> Query(bool? completed, string? category, string sort)
     {
         IQueryable<Todo> query = _context.Todos.AsNoTracking();
 
         if (completed.HasValue)
         {
             query = query.Where(t => t.IsCompleted == completed.Value);
+        }
+
+        if (category != null)
+        {
+            query = query.Where(t => t.Category == category);
         }
 
         query = sort == "created_asc"
@@ -58,6 +63,7 @@ public class TodoRepository : ITodoRepository
 
         existing.Title = todo.Title;
         existing.Description = todo.Description;
+        existing.Category = todo.Category;
         existing.DateCreated = todo.DateCreated;
         existing.IsCompleted = todo.IsCompleted;
         _context.SaveChanges();

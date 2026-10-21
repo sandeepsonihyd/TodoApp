@@ -8,6 +8,7 @@
   </Folder>
   <Folder Name="/.github/NewFolder1/" />
   <Folder Name="/backend/">
+    <Project Path="backend/TodoApp.Api.Tests/TodoApp.Api.Tests.csproj" />
     <Project Path="backend/TodoApp.Api/TodoApp.Api.csproj" />
   </Folder>
   <Folder Name="/docs/">

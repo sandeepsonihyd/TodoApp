@@ -42,11 +42,13 @@ public class TodoService : ITodoService
     {
         var title = ValidateAndTrimTitle(request.Title);
         ValidateDescription(request.Description);
+        var category = NormalizeCategory(request.Category);
 
         var todo = new Todo
         {
             Title = title,
             Description = request.Description,
+            Category = category,
             DateCreated = DateTime.UtcNow,
             IsCompleted = false
         };
@@ -59,6 +61,7 @@ public class TodoService : ITodoService
     {
         var title = ValidateAndTrimTitle(request.Title);
         ValidateDescription(request.Description);
+        var category = NormalizeCategory(request.Category);
 
         var existing = _repository.GetById(id);
         if (existing == null)
@@ -68,6 +71,7 @@ public class TodoService : ITodoService
 
         existing.Title = title;
         existing.Description = request.Description;
+        existing.Category = category;
         existing.IsCompleted = request.IsCompleted ?? false;
 
         if (!_repository.Update(existing))
@@ -105,6 +109,20 @@ public class TodoService : ITodoService
         }
     }
 
+    private static string? NormalizeCategory(string? category)
+    {
+        var trimmed = category?.Trim();
+        if (string.IsNullOrEmpty(trimmed))
+        {
+            return null;
+        }
+        if (trimmed.Length > 50)
+        {
+            throw new ArgumentException("Category must be 50 characters or fewer.");
+        }
+        return trimmed;
+    }
+
     private static TodoResponse ToResponse(Todo todo)
     {
         return new TodoResponse
@@ -112,14 +130,15 @@ public class TodoService : ITodoService
             Id = todo.Id,
             Title = todo.Title,
             Description = todo.Description,
+            Category = todo.Category,
             DateCreated = todo.DateCreated,
             IsCompleted = todo.IsCompleted
         };
     }
     // Count the todos: total, completed and pending 
-    public IReadOnlyList<TodoResponse> Query(bool? completed, string sort)
+    public IReadOnlyList<TodoResponse> Query(bool? completed, string? category, string sort)
     {
-        return _repository.Query(completed, sort).Select(ToResponse).ToList();
+        return _repository.Query(completed, category, sort).Select(ToResponse).ToList();
     }
 
     public int ClearCompleted()
