@@ -28,13 +28,16 @@ async function handleResponse(response) {
   throw new Error(message);
 }
 
-export async function getAll(completed, sort) {
+export async function getAll(completed, sort, category) {
   const params = new URLSearchParams();
   if (completed !== undefined && completed !== null) {
     params.set('completed', completed);
   }
   if (sort) {
     params.set('sort', sort);
+  }
+  if (category) {
+    params.set('category', category);
   }
   const query = params.toString();
   const response = await fetch(`${BASE_URL}/todos${query ? `?${query}` : ''}`);

@@ -16,9 +16,12 @@ public class TodosController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IReadOnlyList<TodoResponse>> GetAll([FromQuery] bool? completed, [FromQuery] string? sort)
+    public ActionResult<IReadOnlyList<TodoResponse>> GetAll(
+        [FromQuery] bool? completed,
+        [FromQuery] string? category,
+        [FromQuery] string? sort)
     {
-        return Ok(_service.Query(completed, sort ?? "created_desc"));
+        return Ok(_service.Query(completed, category, sort ?? "created_desc"));
     }
 
     [HttpDelete("completed")]

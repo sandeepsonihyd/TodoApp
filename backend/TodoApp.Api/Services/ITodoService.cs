@@ -6,7 +6,7 @@ public interface ITodoService
 {
     IReadOnlyList<TodoResponse> GetAll();
     IReadOnlyList<TodoResponse> GetCompleted();
-    IReadOnlyList<TodoResponse> Query(bool? completed, string sort);
+    IReadOnlyList<TodoResponse> Query(bool? completed, string? category, string sort);
     int ClearCompleted();
     TodoResponse? GetById(int id);
     TodoResponse Create(CreateTodoRequest request);
@@ -14,4 +14,3 @@ public interface ITodoService
     bool Delete(int id);
     TodoStatsResponse GetStats();
 }
-
