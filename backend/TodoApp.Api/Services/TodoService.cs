@@ -117,6 +117,29 @@ public class TodoService : ITodoService
         };
     }
     // Count the todos: total, completed and pending 
+    public IReadOnlyList<TodoResponse> Query(bool? completed, string sort)
+    {
+        return _repository.Query(completed, sort).Select(ToResponse).ToList();
+    }
+
+    public int ClearCompleted()
+    {
+        var completedIds = _repository.GetAll()
+            .Where(t => t.IsCompleted)
+            .Select(t => t.Id)
+            .ToList();
+
+        var deleted = 0;
+        foreach (var id in completedIds)
+        {
+            if (_repository.Delete(id))
+            {
+                deleted++;
+            }
+        }
+        return deleted;
+    }
+
     public TodoStatsResponse GetStats()
     {
         var todos = _repository.GetAll();

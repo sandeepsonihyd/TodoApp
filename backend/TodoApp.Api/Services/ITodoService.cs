@@ -6,6 +6,8 @@ public interface ITodoService
 {
     IReadOnlyList<TodoResponse> GetAll();
     IReadOnlyList<TodoResponse> GetCompleted();
+    IReadOnlyList<TodoResponse> Query(bool? completed, string sort);
+    int ClearCompleted();
     TodoResponse? GetById(int id);
     TodoResponse Create(CreateTodoRequest request);
     TodoResponse? Update(int id, UpdateTodoRequest request);

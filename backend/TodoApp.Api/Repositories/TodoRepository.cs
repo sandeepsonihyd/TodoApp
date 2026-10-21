@@ -18,6 +18,22 @@ public class TodoRepository : ITodoRepository
         return _context.Todos.AsNoTracking().ToList();
     }
 
+    public IReadOnlyList<Todo> Query(bool? completed, string sort)
+    {
+        IQueryable<Todo> query = _context.Todos.AsNoTracking();
+
+        if (completed.HasValue)
+        {
+            query = query.Where(t => t.IsCompleted == completed.Value);
+        }
+
+        query = sort == "created_asc"
+            ? query.OrderBy(t => t.DateCreated).ThenBy(t => t.Id)
+            : query.OrderByDescending(t => t.DateCreated).ThenByDescending(t => t.Id);
+
+        return query.ToList();
+    }
+
     public Todo? GetById(int id)
     {
         return _context.Todos.AsNoTracking().FirstOrDefault(t => t.Id == id);
