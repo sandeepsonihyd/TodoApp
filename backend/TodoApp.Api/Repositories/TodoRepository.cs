@@ -4,20 +4,24 @@ using TodoApp.Api.Models;
 
 namespace TodoApp.Api.Repositories;
 
+/// <summary>Persists todos with Entity Framework Core.</summary>
 public class TodoRepository : ITodoRepository
 {
     private readonly TodoDbContext _context;
 
+    /// <summary>Creates the repository with its database context.</summary>
     public TodoRepository(TodoDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>Loads all todos without tracking them for changes.</summary>
     public IReadOnlyList<Todo> GetAll()
     {
         return _context.Todos.AsNoTracking().ToList();
     }
 
+    /// <summary>Loads todos with an optional completion filter and deterministic date/id ordering.</summary>
     public IReadOnlyList<Todo> Query(bool? completed, string sort)
     {
         IQueryable<Todo> query = _context.Todos.AsNoTracking();
@@ -34,13 +38,16 @@ public class TodoRepository : ITodoRepository
         return query.ToList();
     }
 
+    /// <summary>Loads one todo without tracking it, or returns null when it is absent.</summary>
     public Todo? GetById(int id)
     {
         return _context.Todos.AsNoTracking().FirstOrDefault(t => t.Id == id);
     }
 
+    /// <summary>Persists a new todo and returns it with its database-generated id.</summary>
     public Todo Add(Todo todo)
     {
+        // Let SQLite generate the identifier, even if the caller supplied a value.
         todo.Id = 0;
         _context.Todos.Add(todo);
         _context.SaveChanges();
@@ -48,6 +55,7 @@ public class TodoRepository : ITodoRepository
         return todo;
     }
 
+    /// <summary>Copies the supplied values to a stored todo and saves the changes.</summary>
     public bool Update(Todo todo)
     {
         var existing = _context.Todos.FirstOrDefault(t => t.Id == todo.Id);
@@ -64,6 +72,7 @@ public class TodoRepository : ITodoRepository
         return true;
     }
 
+    /// <summary>Removes the todo with the given id when it exists.</summary>
     public bool Delete(int id)
     {
         var existing = _context.Todos.FirstOrDefault(t => t.Id == id);
