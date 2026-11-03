@@ -1,26 +1,25 @@
 def Add(op1,op2):
-    #adds two numbers   
+    """Return the sum of two numbers."""
     return op1+op2
 
 def Subtract(op1,op2):
-    #subtracts second number from first
+    """Subtract the second number from the first."""
     return op1-op2
 
 def Multiply(op1,op2):
-    #multiplies two numbers
+    """Return the product of two numbers."""
     return op1*op2
 
 def Divide(op1,op2):
-    #divides first number by second
+    """Divide the first number by the second, raising ValueError for zero."""
     if op2 == 0:
         raise ValueError("Cannot divide by zero")
     return op1/op2
 
 def Factorial(n):
-   #Implement using recursion for factorial calculation
+   """Return the factorial of a non-negative integer using recursion."""
    if n < 0:
        raise ValueError("Factorial is not defined for negative numbers")
    if n == 0 or n == 1:
        return 1
    return n * Factorial(n-1)
-

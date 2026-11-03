@@ -9,10 +9,12 @@ using TodoApp.Api.Data;
 
 namespace TodoApp.Tests;
 
+/// <summary>Creates an API test host backed by an isolated temporary SQLite database.</summary>
 public class TodoApiFactory : WebApplicationFactory<Program>
 {
     private readonly string _dbPath = Path.Combine(Path.GetTempPath(), $"todos-test-{Guid.NewGuid():N}.db");
 
+    /// <summary>Replaces the application database with a fresh test database.</summary>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
@@ -30,6 +32,7 @@ public class TodoApiFactory : WebApplicationFactory<Program>
         });
     }
 
+    /// <summary>Closes the test host and removes its temporary database file.</summary>
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
