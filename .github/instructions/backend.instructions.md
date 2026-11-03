@@ -1,23 +1,37 @@
 ---
 applyTo: "backend/**"
 ---
-# Backend Instructions
- 
-## Stack
-C# 14, .NET 10, ASP.NET Core Web API. 
-SQLite through Entity Framework Core with migrations (Version 2).
- 
-## Rules
-- Every endpoint is defined in a controller class. Controllers call services only.
-- Services contain the business rules and never reference ASP.NET Core types.
-- The repository is the only class that uses TodoDbContext. It is the only class that knows how todos are stored.
-- Register the service and the repository through dependency injection. The DbContext, the repository and the service are all scoped (AddScoped). Never register the repository as a singleton.
-- Request and response bodies are DTO classes. Do not return raw dictionaries or anonymous objects from an endpoint.
-- Ids are generated in the repository, not in the controller or service.
-- Use `DateTime.UtcNow` for DateCreated. Never `DateTime.Now`.
- 
+# Backend (C# / ASP.NET Core, .NET 10)
+
+## Layers (each layer calls only the one directly below)
+- Controllers/ - routing, model binding and status-code mapping only. Use DTOs. No business logic, no data access, never inject `ITodoRepository` or use the `Todo` entity.
+- Services/ - business rules: trim and validate, set `DateCreated = DateTime.UtcNow`, map `Todo` to `TodoResponse`. Throw `ArgumentException` for invalid input. Never touch HTTP types.
+- Repositories/ - the only code that uses `TodoDbContext`. No validation, no DTOs, no HTTP types.
+- Data/ (DbContext), Models/ (entities), Dtos/ (requests and responses), Migrations/.
+- When storage changes, only the repository layer changes.
+
+## Conventions
+- PascalCase for types, methods and properties; camelCase for locals and parameters; `_camelCase` for private fields.
+- 4-space indent, file-scoped namespaces, nullable reference types on, constructor injection.
+- Each service and repository has an interface and is registered as Scoped in Program.cs.
+- Keep `PropertyNamingPolicy = null` in Program.cs.
+- Use `DateTime.UtcNow`, never `DateTime.Now`.
+
+## Controllers
+- `[ApiController]` and `[Route("todos")]`.
+- Service returns null/false -> `NotFound(ProblemDetails)`; `ArgumentException` -> `BadRequest(ProblemDetails)`; create -> `CreatedAtAction`; delete -> `NoContent`.
+- Request DTOs carry `[Required]` and `[MaxLength]`; the service re-validates the same rules.
+
+## Data and migrations
+- Every model change needs an EF Core migration: `dotnet ef migrations add <Name>` from backend/TodoApp.Api. Never hand-edit the snapshot or an applied migration.
+- Use `AsNoTracking` for reads. `Update` and `Delete` return `bool` (false = id not found).
+- Adding a field (e.g. Category): update Todo, DTOs, `ToResponse`, repository, migration, tests and the frontend together.
+
+## Testing
+- backend/TodoApp.Tests uses xUnit, Moq for unit tests, and `TodoApiFactory` (WebApplicationFactory with a temp SQLite file) for API tests.
+- Cover each status code (200/201/204/400/404) for any endpoint you add or change.
+- Run `dotnet build` and `dotnet test` from backend/.
+
 ## Do NOT
-- Inject the repository directly into a controller.
-- Use static mutable state outside the repository class.
-- Add try/catch blocks around normal control flow. Let ASP.NET Core
-  handle what it handles.
+- Put data access in a controller or a service, or business logic in a controller.
+- Add NuGet packages without stating why.
